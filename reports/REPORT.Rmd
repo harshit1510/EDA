@@ -5,9 +5,40 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = normalizePath('..'))
 ```
 
-```{r}
 
+```{r}
+load.project
+```
+#TO FIND ANY UNKNOW VALUES
+```{r}
+x=cyber.security.4_leaving.survey.responses
+unique(x)
+```
+```{r}
+unique(x$id)
+```
+```{r}
+unique(x$learner_id)
+```
+```{r}
+unique(x$left_at)
+```
+```{r}
+unique(x$leaving_reason)
+```
+```{r}
+unique(x$last_completed_step_at)
+```
+```{r}
+unique(x$last_completed_step)
+```
+```{r}
+unique(x$last_completed_week_number)
+```
+```{r}
+unique(x$last_completed_step_number)
 ```
 
