@@ -18,6 +18,10 @@ x=cyber.security.4_leaving.survey.responses
 unique(x)
 ```
 ```{r}
+summary(x)
+```
+#Understanding each of the table separtely for betterment of cleaning the data
+```{r}
 unique(x$id)
 ```
 ```{r}
@@ -40,5 +44,34 @@ unique(x$last_completed_week_number)
 ```
 ```{r}
 unique(x$last_completed_step_number)
+```
+#Different types/techinques of cleaning the data
+1. Remove Irrelevant Values
+2. Get Rid of Duplicate Values
+3. Avoid Typos (and similar errors)
+4. Convert Data Types
+5. Take Care of Missing Values
+#Creating a dataframe without any missing values.
+```{r}
+x1=na.omit(x)
+unique(x1)
+summary(x1)
+```
+```{r}
+gender_plot = ggplot(x1, aes(x = factor(leaving_reason))) + 
+  geom_bar(stat = "count", width = 0.7, fill = "steelblue") + theme_minimal() 
+gender_plot
+```
+```{r}
+gender_plot = ggplot(x, aes(x = factor(leaving_reason))) + 
+  geom_bar(stat = "count", width = 0.7, fill = "steelblue") + theme_minimal() 
+gender_plot
+```
+
+
+
+```{r}
+ggplot(x1,aes(x=learner_id, y=id, fill=leaving_reason))+
+  geom_bar(stat = "identity",color="darkblue",position = position_dodge())
 ```
 
