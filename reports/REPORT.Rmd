@@ -58,10 +58,11 @@ unique(x1)
 summary(x1)
 ```
 ```{r}
-gender_plot = ggplot(x1, aes(x = factor(leaving_reason))) + 
+gender_plot = ggplot(x1, aes(y = factor(leaving_reason))) + 
   geom_bar(stat = "count", width = 0.7, fill = "steelblue") + theme_minimal() 
 gender_plot
 ```
+
 ```{r}
 gender_plot = ggplot(x, aes(x = factor(leaving_reason))) + 
   geom_bar(stat = "count", width = 0.7, fill = "steelblue") + theme_minimal() 
@@ -73,5 +74,77 @@ gender_plot
 ```{r}
 ggplot(x1,aes(x=learner_id, y=id, fill=leaving_reason))+
   geom_bar(stat = "identity",color="darkblue",position = position_dodge())
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#--------------------------------------------------------------------------------------
+
+#Analysis of cyber.secrity 4
+```{r}
+cs4=cyber.security.4_video.stats
+summary(cs4)
+```
+```{r}
+dim(cs4)
+head(cs4)
+```
+#Plotting the video stats
+```{r}
+ggplot(cs4,aes(y=title,x=step_position))+
+  geom_bar(stat = "identity",color="green",position = position_dodge())
+  
+```
+#Analysis of title with video_duration
+```{r}
+ggplot(cs4,aes(y=title,x=video_duration))+
+  geom_bar(stat = "identity",color="green",position = position_dodge())
+```
+#Analysis of total views
+```{r}
+ggplot(cs4,aes(y=title,x=total_views,))+
+  geom_col(stat = "identity",color="green",position = position_dodge())
+```
+
+```{r}
+pie <- ggplot(cs4, aes(x = "", fill = factor())) + 
+  geom_bar(width = 1) +
+  theme(axis.line = element_blank(), 
+        plot.title = element_text(hjust=0.5)) + 
+  labs(fill="class", 
+       x=NULL, 
+       y=NULL, 
+       title="Pie Chart of class", 
+       caption="Source: mpg")
+  
+pie + coord_polar(theta = "y", start=0)
+```
+
+```{r}
+index=cs4[9,15]
+index
 ```
 
