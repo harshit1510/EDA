@@ -143,8 +143,81 @@ pie <- ggplot(cs4, aes(x = "", fill = factor())) +
 pie + coord_polar(theta = "y", start=0)
 ```
 
+#Lollipop plot
 ```{r}
-index=cs4[9,15]
+index=cs4[,c(9:15)]
 index
+ggplot(cs4, aes(y=title, x=viewed_five_percent)) + 
+  geom_point(size=3) + 
+  geom_segment(aes(y=title, 
+                   yend=title, 
+                   x=0, 
+                   xend=viewed_five_percent))
 ```
+#--------------------------------------------------------------------------------------
+
+
+#Task which i am doing is that comparing the various variable from the dataset which is given for cybersecurity. So i am comparing the 1st iteration with the last two itertaion to know whther there is a decrease in ppl taking the course.
+#Taking the enrolment dataset which was used of the first iteration. 
+```{r}
+cs=cyber.security.4_enrolments
+```
+#Loading the dataset into cs1 for data cleaning.
+#Different types/techinques of cleaning the data
+1. Remove Irrelevant Values
+2. Get Rid of Duplicate Values
+3. Avoid Typos (and similar errors)
+4. Convert Data Types
+5. Take Care of Missing Values
+#Data Cleaning on the dataset.
+1.There are no irrelevant values in the dataset and all data variables are related.
+2.Removing the duplicate values.As we can tell from the output that there are no duplicate values in the dataset.
+3.There are no similar errors in the dataset.
+4.Convert Data Types. Since all the data available in the dataset is of similar data type, Therefore there is no conversion needed.
+5.Omitting the missing values.
+At-last, cs4 variable contains the cleaned dataset.
+```{r}
+a=duplicated(cs)#to check whether there is any duplicate data in the data set.
+a
+b=sapply(a, class)#to check whether the data given is of same data type.
+b
+cs4=na.omit(cs)
+summary(cs4)
+```
+#Starting the analysing process.
+Viewing the number of students enrolled for the course and also checking gender wise for the 1st iteration.
+```{r}
+s_enrolled=length(unique(cs4$learner_id))
+s_enrolled
+s_enrolled_gender=table(cs4$gender)
+s_enrolled_gender
+gender_plot = ggplot(cs1, aes(x = factor(gender))) + 
+  geom_bar(stat = "count", width = 0.7, fill = "Red") + theme_minimal() 
+gender_plot
+pie =gender_plot + coord_polar("y", start=0)+ scale_fill_brewer(palette="Dark2")
+pie #should ask.
+```
+
+```{r}
+en_students=as.data.frame(table(cs4$detected_country))
+#removing the row without country code.
+enrolled_students=en_students[-c(1),]
+table(enrolled_students$country)
+#selecting the countries with more than 65 enrollments
+countries_with_more_than_65_enrollment=enrolled_students[enrolled_students$Freq>65,]
+countries_with_more_than_65_enrollment %>%
+ggplot(aes(reorder(Var1,-Freq),Freq))+
+  geom_col(stat="identity", fill="green",alpha=.8,width = .6)+
+  labs(title="No of Students Enrolled vs Countries",x="Countires",
+  y="No. of Students Enrolled")+
+  theme(plot.title = element_text(hjust = 0.5)) #how to count
+```
+```{r}
+students_unenrolled=length(cyber.security.4_leaving.survey.responses$left_at)
+students_unenrolled #Number of students unenrolled
+s_enrolled #Number of students enrolled
+Percentage_unenrolled=(students_unenrolled/s_enrolled)*100
+Percentage_unenrolled
+```
+unenrolled.
 
