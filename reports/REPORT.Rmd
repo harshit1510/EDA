@@ -198,6 +198,17 @@ pie =gender_plot + coord_polar("y", start=0)+ scale_fill_brewer(palette="Dark2")
 pie #should ask.
 ```
 
+
+
+```{r}
+employment_plot = ggplot(cyber.security.3_enrolments, aes(x = factor(employment_status))) + 
+  geom_bar(stat = "count", width = 0.7, fill = "orange") + theme_minimal() + 
+  scale_x_discrete(guide = guide_axis(n.dodge = 2))
+employment_plot
+```
+
+
+
 ```{r}
 en_students=as.data.frame(table(cs4$detected_country))
 #removing the row without country code.
@@ -212,6 +223,36 @@ ggplot(aes(reorder(Var1,-Freq),Freq))+
   y="No. of Students Enrolled")+
   theme(plot.title = element_text(hjust = 0.5)) #how to count
 ```
+
+#We can check how many students are getting unenrolled from leaving survey response dataset and calculate the percentage of students unenrolled from the course.
+For 1st iteration.
+```{r}
+students_unenrolled1=length(cyber.security.1_leaving.survey.responses$left_at)
+students_unenrolled1 #Number of students unenrolled at 1st iteration
+s_enrolled1=length(unique(cyber.security.1_enrolments$learner_id))#Number of students enrolled
+s_enrolled1
+Percentage_unenrolled1=(students_unenrolled1/s_enrolled1)*100
+Percentage_unenrolled1
+```
+For 2nd iteration
+```{r}
+students_unenrolled2=length(cyber.security.2_leaving.survey.responses$left_at)
+students_unenrolled2 #Number of students unenrolled at 1st iteration
+s_enrolled2=length(unique(cyber.security.2_enrolments$learner_id))#Number of students enrolled
+s_enrolled2
+Percentage_unenrolled2=(students_unenrolled2/s_enrolled2)*100
+Percentage_unenrolled2
+```
+For 3rd iteration
+```{r}
+students_unenrolled3=length(cyber.security.3_leaving.survey.responses$left_at)
+students_unenrolled3 #Number of students unenrolled at 1st iteration
+s_enrolled3=length(unique(cyber.security.3_enrolments$learner_id))#Number of students enrolled
+s_enrolled3
+Percentage_unenrolled3=(students_unenrolled3/s_enrolled3)*100
+Percentage_unenrolled3
+```
+For 4th iteration
 ```{r}
 students_unenrolled=length(cyber.security.4_leaving.survey.responses$left_at)
 students_unenrolled #Number of students unenrolled
@@ -219,5 +260,88 @@ s_enrolled #Number of students enrolled
 Percentage_unenrolled=(students_unenrolled/s_enrolled)*100
 Percentage_unenrolled
 ```
-unenrolled.
+For 5th iteration
+```{r}
+students_unenrolled5=length(cyber.security.5_leaving.survey.responses$left_at)
+students_unenrolled5 #Number of students unenrolled at 1st iteration
+s_enrolled5=length(unique(cyber.security.5_enrolments$learner_id))#Number of students enrolled
+s_enrolled5
+Percentage_unenrolled5=(students_unenrolled5/s_enrolled5)*100
+Percentage_unenrolled5
+```
+For 6th iteration
+```{r}
+students_unenrolled6=length(cyber.security.6_leaving.survey.responses$left_at)
+students_unenrolled6 #Number of students unenrolled at 1st iteration
+s_enrolled6=length(unique(cyber.security.6_enrolments$learner_id))#Number of students enrolled
+s_enrolled6
+Percentage_unenrolled6=(students_unenrolled6/s_enrolled6)*100
+Percentage_unenrolled6
+```
+For 7th iteration
+```{r}
+students_unenrolled7=length(cyber.security.7_leaving.survey.responses$left_at)
+students_unenrolled7 #Number of students unenrolled at 1st iteration
+s_enrolled7=length(unique(cyber.security.7_enrolments$learner_id))#Number of students enrolled
+s_enrolled7
+Percentage_unenrolled7=(students_unenrolled7/s_enrolled7)*100
+Percentage_unenrolled7
+```
+From the above calculation we can tell that, for the first 3 iteration, the percentage of unenrolled  is 0.But for the 4th iteration there is an increase from 0 to 2%.Likewise, the percentage for 5th, 6th and 7th is 5%,3%, 3.5% respectively.
+
+
+
+#Checking the main reason for leaving the course for 4th iteration.
+```{r}
+gender_plot = ggplot(cyber.security.4_leaving.survey.responses, aes(y = factor(leaving_reason))) + 
+  geom_bar(stat = "count", width = 0.7, fill = "steelblue") + theme_minimal() 
+gender_plot
+```
+
+```{r}
+merge=merge.data.frame(cyber.security.4_leaving.survey.responses,cyber.security.4_enrolments,on="learner_id")
+unenrolled_students=as.data.frame(table(merge$detected_country))
+countries_with_more_than_3_unenrollment=unenrolled_students[unenrolled_students$Freq>3,]
+countries_with_more_than_3_unenrollment %>%
+ggplot(aes(reorder(Var1,-Freq),Freq))+
+  geom_bar(stat="identity", fill="black",alpha=.8,width = .6)+
+    labs(title="No of Students Unenrolled vs Countries",x="Countires",
+      y="No. of students unenrolled")+
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+```{r}
+students_unerolled_plot=as.data.frame(table(cyber.security.4_leaving.survey.responses$leaving_reason))
+ggplot(students_unerolled_plot,aes(reorder(Var1,Freq),Freq))+
+  geom_bar(stat="identity", fill="#f68060", alpha=.8, width=.5) +
+    coord_flip() +
+   labs(title="No of students unenrolled vs reasons",x="Reasons",y="No .of students unenrolled")+
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+```{r}
+ggplot(cyber.security.4_video.stats,aes(y=title,x=total_views,))+
+  geom_col(stat = "identity",color="green",position = position_dodge())
+```
+
+
+```{r}
+g=ggplot(cyber.security.4_video.stats)
+g+geom_path(aes(x=step_position,y=europe_views_percentage,colour='Europe view percentage'))+
+geom_path(aes(x=step_position,y=oceania_views_percentage,colour='Oceania view percentage'))+
+geom_path(aes(x=step_position,y=asia_views_percentage,colour='Asia view percentage'))+
+geom_path(aes(x=step_position,y=north_america_views_percentage,colour='North America view percentage'))+
+geom_path(aes(x=step_position,y=south_america_views_percentage,colour='South America view percentage '))+
+geom_path(aes(x=step_position,y=africa_views_percentage,colour='Africa view percentage'))+
+scale_color_discrete("Pattern")+xlab("step position")+ylab("viewed percentage")
+```
+
+```{r}
+enrollment.list=list(cyber.security.1_enrolments,cyber.security.2_enrolments,cyber.security.3_enrolments,cyber.security.4_enrolments,cyber.security.5_enrolments,cyber.security.6_enrolments,cyber.security.7_enrolments)
+
+students_enrollements_over_7_runs=lapply(enrollment.list, function(cs4) length(unique(cs4$unenrolled_at)))
+students=data.frame(students_enrollements_over_7_runs)
+colnames(students)=c("1st time","2nd time ","3rd time","4th time","5th time","6th time","7th time")
+students
+```
 
