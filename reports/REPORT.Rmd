@@ -7,155 +7,42 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_knit$set(root.dir = normalizePath('..'))
 ```
+#----------------------------EDA PROJECT----------------------------------------------
+The goal of this project is to examine (EDA) the cyber-security course data files acquired from each run by FutureLearn, a company that offers free cyber-security courses both online and offline.
+The project follows the CRISP DM methodology.
+CRISP DM methodology:The CRISP-DM (CRoss Industry Standard Process for Data Mining) is a six-phase process model that accurately captures the data science life cycle. It functions as a series of guidelines to assist you in planning, organizing, and implementing your data science (or machine learning) project.
+1.Business understanding - What does the business need?
+2.Data understanding – What data do we have / need? Is it clean?
+3.Data preparation – How do we organize the data for modeling?
+4.Modeling – What modeling techniques should we apply?
+5.Evaluation – Which model best meets the business objectives?
+6.Deployment – How do stakeholders access the results?
+**Business understanding**
 
+The project's primary aim is to extract some useful information from the cyber-security dataset so that we may assist in the development of a viable business model for the FutureLearn company's next course.
 
+**Data understanding**
+
+FutureLearn is a British digital education platform that offers a variety of short courses that can be enrolled in and audited for free for a period of five weeks. The company's data file contains over 50 datasets, which were obtained after the course was repeated seven times. Enrollments, types of learners enrolled, learner exit responses, question responses during the course, step activity performed by each student, team members, video statistics of course content, and learners' weekly survey responses are all included in the data file.
+
+The enrollments data set contains the learners' information, including their unique IDs, the course's enrolled and unenrolled dates and times, and additional fields such as gender, nation, age, highest education level, employment location, and current employment status. The vast majority of the students' personal data was not captured. A figure or action that symbolizes universal human nature patterns is referred to as an archetype. The information that categories the students is contained in the archetype data collection.
+
+The specifics of the learners who left the course at what stage and for what reason can be found in the departing survey answer dataset. Each learner's responses to quiz questions conducted at a certain moment in each week are collected in the question response data collection. The results of the quiz may also be seen here. Learners who started and departed the step at particular times are recorded in the step activity data collection. The video statistics data set includes videos of certain steps with titles and information such as time, views, downloads, viewed percentage, and learners' viewed continents.
+
+**Data Preparation**
+
+For this study, I choose to analyse the cyber-security course using enrollment, video statistics, the step-activity dataset, and survey responses from the fourth iteration. The arechtype, question response, and weekly sentiments analysis were all left out because they provided very little information on the assumptions I needed to anticipate.
+
+**Modelling**
+
+I use RStudio, an IDE for creating graphical insights from data sets, in this case.
+
+Installing the Project Template packages to create a project: This part of process was done in Console window.
+
+Loading the Project:
 ```{r}
 load.project
 ```
-#TO FIND ANY UNKNOW VALUES
-```{r}
-x=cyber.security.4_leaving.survey.responses
-unique(x)
-```
-```{r}
-summary(x)
-```
-#Understanding each of the table separtely for betterment of cleaning the data
-```{r}
-unique(x$id)
-```
-```{r}
-unique(x$learner_id)
-```
-```{r}
-unique(x$left_at)
-```
-```{r}
-unique(x$leaving_reason)
-```
-```{r}
-unique(x$last_completed_step_at)
-```
-```{r}
-unique(x$last_completed_step)
-```
-```{r}
-unique(x$last_completed_week_number)
-```
-```{r}
-unique(x$last_completed_step_number)
-```
-#Different types/techinques of cleaning the data
-1. Remove Irrelevant Values
-2. Get Rid of Duplicate Values
-3. Avoid Typos (and similar errors)
-4. Convert Data Types
-5. Take Care of Missing Values
-#Creating a dataframe without any missing values.
-```{r}
-x1=na.omit(x)
-unique(x1)
-summary(x1)
-```
-```{r}
-gender_plot = ggplot(x1, aes(y = factor(leaving_reason))) + 
-  geom_bar(stat = "count", width = 0.7, fill = "steelblue") + theme_minimal() 
-gender_plot
-```
-
-```{r}
-gender_plot = ggplot(x, aes(x = factor(leaving_reason))) + 
-  geom_bar(stat = "count", width = 0.7, fill = "steelblue") + theme_minimal() 
-gender_plot
-```
-
-
-
-```{r}
-ggplot(x1,aes(x=learner_id, y=id, fill=leaving_reason))+
-  geom_bar(stat = "identity",color="darkblue",position = position_dodge())
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#--------------------------------------------------------------------------------------
-
-#Analysis of cyber.secrity 4
-```{r}
-cs4=cyber.security.4_video.stats
-summary(cs4)
-```
-```{r}
-dim(cs4)
-head(cs4)
-```
-#Plotting the video stats
-```{r}
-ggplot(cs4,aes(y=title,x=step_position))+
-  geom_bar(stat = "identity",color="green",position = position_dodge())
-  
-```
-#Analysis of title with video_duration
-```{r}
-ggplot(cs4,aes(y=title,x=video_duration))+
-  geom_bar(stat = "identity",color="green",position = position_dodge())
-```
-#Analysis of total views
-```{r}
-ggplot(cs4,aes(y=title,x=total_views,))+
-  geom_col(stat = "identity",color="green",position = position_dodge())
-```
-
-```{r}
-pie <- ggplot(cs4, aes(x = "", fill = factor())) + 
-  geom_bar(width = 1) +
-  theme(axis.line = element_blank(), 
-        plot.title = element_text(hjust=0.5)) + 
-  labs(fill="class", 
-       x=NULL, 
-       y=NULL, 
-       title="Pie Chart of class", 
-       caption="Source: mpg")
-  
-pie + coord_polar(theta = "y", start=0)
-```
-
-#Lollipop plot
-```{r}
-index=cs4[,c(9:15)]
-index
-ggplot(cs4, aes(y=title, x=viewed_five_percent)) + 
-  geom_point(size=3) + 
-  geom_segment(aes(y=title, 
-                   yend=title, 
-                   x=0, 
-                   xend=viewed_five_percent))
-```
-#--------------------------------------------------------------------------------------
-
 
 #Task which i am doing is that comparing the various variable from the dataset which is given for cybersecurity. So i am comparing the 1st iteration with the last two itertaion to know whther there is a decrease in ppl taking the course.
 #Taking the enrolment dataset which was used of the first iteration. 
@@ -337,9 +224,9 @@ scale_color_discrete("Pattern")+xlab("step position")+ylab("viewed percentage")
 ```
 
 ```{r}
-enrollment.list=list(cyber.security.1_enrolments,cyber.security.2_enrolments,cyber.security.3_enrolments,cyber.security.4_enrolments,cyber.security.5_enrolments,cyber.security.6_enrolments,cyber.security.7_enrolments)
+unenrollment.list=list(cyber.security.1_enrolments,cyber.security.2_enrolments,cyber.security.3_enrolments,cyber.security.4_enrolments,cyber.security.5_enrolments,cyber.security.6_enrolments,cyber.security.7_enrolments)
 
-students_enrollements_over_7_runs=lapply(enrollment.list, function(cs4) length(unique(cs4$unenrolled_at)))
+students_unenrollements_over_7_runs=lapply(unenrollment.list, function(cs4) length(unique(cs4$unenrolled_at)))
 students=data.frame(students_enrollements_over_7_runs)
 colnames(students)=c("1st time","2nd time ","3rd time","4th time","5th time","6th time","7th time")
 students
