@@ -226,12 +226,6 @@ ggplot(students_unerolled_plot,aes(reorder(Var1,Freq),Freq))+
 According to the responses, 14 students dropped out of the course because the course was not what they expected, 12 students believed that they dint have enough time, and 6 students thought the course would not help them reach there goals.
 We can also see that just 67 students out of a total of 3991 dropped out of the course. When the course was offered for the fifth time, 5% of the total students registered.
 
-
-```{r}
-ggplot(cyber.security.4_video.stats,aes(y=title,x=total_views,))+
-  geom_col(stat = "identity",color="green",position = position_dodge())
-```
-
 Let's see whether there's a link between the number of people who viewed the course and the number of people who enrolled from different nations. We can extract the seen percentage of the continents from the video stat dataset.
 ```{r}
 g=ggplot(cyber.security.4_video.stats)
@@ -261,23 +255,30 @@ From the above, we can see that when the course was first offered, more than 121
 But when calculated percenatge for 4th, 5th, 6th and 7th time, it was 2%, 5%, 3%, 3.4%
 So we can tell that the unenrollement increase till 5th time and had a slight downfall in the next times.
 
+
+**The second assumption:**
+To determine how engaged students are as the course progresses, we must determine what the primary reason for quitting the course is, whether the video lecture is effective in learning knowledge, and whether there is a strong correlation between view and step actions.
+
 Checking the main reason for leaving the course for 4th iteration.
 ```{r}
 gender_plot = ggplot(cyber.security.4_leaving.survey.responses, aes(y = factor(leaving_reason))) + 
   geom_bar(stat = "count", width = 0.7, fill = "steelblue") + theme_minimal() 
 gender_plot
 ```
+By seeing the above plot, we can tell the main reasons why students were unenrolling from the course when the course was provided fro the 4th time.The four main reason are,"others", "The course was not what I expected", "I don't have enough time" and "The course wont help me reach my goals" with 16, 14, 11 and 8 counts respectively. So by this we can tell that the management has failed to provide the knowledge what students were trying to seek. SO if management changes the way the knowledge given, there might be more enrollment for future courses.
 
+Plotting the graph between title and total number of views
+```{r}
+ggplot(cyber.security.4_video.stats,aes(y=title,x=total_views,))+
+  geom_col(stat = "identity",color="green",position = position_dodge())
+```
+From the above graph we can tell that, the student enrolled for the course for the 4th time, there were 1650 views for the title "Welcome to the course", which is followed by "privacy online and offline" and "why would anyone want your data" with 1300 and 900 views in total.By this I can tell that If the company tries to adds more detail information at the beginning itself, there might be a possibility for more enrollment of students for the future course
 
-
-
-
-
-
+Plotting the graph between step position and total number of views from video.stat data.
 ```{r}
 ggplot(cyber.security.5_video.stats,aes(reorder(step_position,-total_views),total_views))+
   geom_bar(stat="identity", fill="#f68060", alpha=.6, width=.4)+
    labs(title="Step position vs Total views",x="Step position",y="Total views")+
   theme(plot.title = element_text(hjust = 0.5))
 ```
-should do the 2nd hypothesis by using somw unsed graph.
+We can see from the above graph that there is a strong link between view and step actions. As a result, we can assume that the majority of the enrolled students were curious about the course and what they may learn from it. As the semester progressed, the course's popularity and participation dwindled.
