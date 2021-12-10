@@ -17,6 +17,7 @@ CRISP DM methodology:The CRISP-DM (CRoss Industry Standard Process for Data Mini
 4.Modeling – What modeling techniques should we apply?
 5.Evaluation – Which model best meets the business objectives?
 6.Deployment – How do stakeholders access the results?
+
 **Business understanding**
 
 The project's primary aim is to extract some useful information from the cyber-security dataset so that we may assist in the development of a viable business model for the FutureLearn company's next course.
@@ -31,7 +32,7 @@ The specifics of the learners who left the course at what stage and for what rea
 
 **Data Preparation**
 
-For this study, I choose to analyse the cyber-security course using enrollment, video statistics, the step-activity dataset, and survey responses from the fourth iteration. The arechtype, question response, and weekly sentiments analysis were all left out because they provided very little information on the assumptions I needed to anticipate.
+For this study, I choose to analyse the cyber-security course using enrollment, video statistics, the step-activity dataset, and survey responses from the fourth iteration. The arechtype, question response, and weekly sentiments analysis were all left out because they provided very little information on the hypothesis I needed to anticipate.
 
 **Modelling**
 
@@ -43,13 +44,34 @@ Loading the Project:
 ```{r}
 load.project
 ```
+**Design and Implementation Of the Project**
+For the project, I first looked at the data sets, which was the first iteration, but as I worked, I discovered that there were no unenrolled students. This happened again for the second and third iterations. As a result, I had to select the data set for the fourth iteration.
 
-#Task which i am doing is that comparing the various variable from the dataset which is given for cybersecurity. So i am comparing the 1st iteration with the last two itertaion to know whther there is a decrease in ppl taking the course.
-#Taking the enrolment dataset which was used of the first iteration. 
+The first hypothesis I wanted to check was how many students were enrolled and unenrolled during the 4th iteration of the course, and then compare the results to the overall iteration of 7, to see if there was an increase or decrease in the factor enrollment and unenrollment. In addition, the amount of enrolls came from which country.
+
+The second hypothesis I intended to test was to determine why students dropped out of the course and compare that element to the overall iteration. In addition, I will investigate the specific reasons why students dropped out of the 4th iteration of the course, as well as the gender of the students, in order to improve the number of students who join in the future course.
+
+
+**First Hypothesis**
+1.Counted the number of students enrolled when the cyber-security course was run for 4th iteration.
+2.Plotted the graph between number of students enrolled VS Countries.
+3.Calculate the total number of students who have dropped out of the course and the percentage of those who have unenrolled.
+4.Plotted the graph between Numbers of Students unenrolled VS Countries.
+5.Plotted the graph between Numbers of Students unenrolled VS Reasons for unenrollment.
+6.By plotting view percentages from each continent, we were able to find a link between nations where the course received the most views and learners who enrolled from those countries.
+7.Finding the number of students getting unenrolled over 7 runs.
+
+**Second Hypothesis**
+
+
+
+
+
+**Exploratory Data Analysis**
+Loading the dataset into variable for data cleaning process.
 ```{r}
 cs=cyber.security.4_enrolments
 ```
-#Loading the dataset into cs1 for data cleaning.
 #Different types/techinques of cleaning the data
 1. Remove Irrelevant Values
 2. Get Rid of Duplicate Values
@@ -64,12 +86,12 @@ cs=cyber.security.4_enrolments
 5.Omitting the missing values.
 At-last, cs4 variable contains the cleaned dataset.
 ```{r}
-a=duplicated(cs)#to check whether there is any duplicate data in the data set.
+a=duplicated(cs)#To check whether there is any duplicate data in the data set.
 a
-b=sapply(a, class)#to check whether the data given is of same data type.
+b=sapply(a, class)#To check whether the data given is of same data type.
 b
 cs4=na.omit(cs)
-summary(cs4)
+summary(cs4)  #Getting the summary for the cleaned dataset
 ```
 #Starting the analysing process.
 Viewing the number of students enrolled for the course and also checking gender wise for the 1st iteration.
@@ -84,9 +106,9 @@ gender_plot
 pie =gender_plot + coord_polar("y", start=0)+ scale_fill_brewer(palette="Dark2")
 pie #should ask.
 ```
+From the Above plot we can tell male tend to attend the course than female excluding the unknown variable. 
 
-
-
+Identifying number of Enrollments based on employment status of students
 ```{r}
 employment_plot = ggplot(cyber.security.3_enrolments, aes(x = factor(employment_status))) + 
   geom_bar(stat = "count", width = 0.7, fill = "orange") + theme_minimal() + 
@@ -94,7 +116,7 @@ employment_plot = ggplot(cyber.security.3_enrolments, aes(x = factor(employment_
 employment_plot
 ```
 
-
+Let's see which nations have the most students enrolled in the cyber-security course when it was run for the fourth iteration, and plotting the graph between the number of students enrolled and country. Here, we'll only plot the countries with more than 65 enrollments.
 
 ```{r}
 en_students=as.data.frame(table(cs4$detected_country))
@@ -110,9 +132,10 @@ ggplot(aes(reorder(Var1,-Freq),Freq))+
   y="No. of Students Enrolled")+
   theme(plot.title = element_text(hjust = 0.5)) #how to count
 ```
+From the plot above, we can see that the Great Britain had over 1000 students enrolled in a cyber-security course out of a total of 3991, followed by India and Egypt with 320 and 290 students, respectively.
 
-#We can check how many students are getting unenrolled from leaving survey response dataset and calculate the percentage of students unenrolled from the course.
-For 1st iteration.
+We can calculate the percentage of students who have dropped out of the course by looking at the number of students who have dropped out from the leaving survey response dataset.
+#For 1st iteration.
 ```{r}
 students_unenrolled1=length(cyber.security.1_leaving.survey.responses$left_at)
 students_unenrolled1 #Number of students unenrolled at 1st iteration
@@ -121,25 +144,25 @@ s_enrolled1
 Percentage_unenrolled1=(students_unenrolled1/s_enrolled1)*100
 Percentage_unenrolled1
 ```
-For 2nd iteration
+#For 2nd iteration
 ```{r}
 students_unenrolled2=length(cyber.security.2_leaving.survey.responses$left_at)
-students_unenrolled2 #Number of students unenrolled at 1st iteration
+students_unenrolled2 #Number of students unenrolled at 2st iteration
 s_enrolled2=length(unique(cyber.security.2_enrolments$learner_id))#Number of students enrolled
 s_enrolled2
 Percentage_unenrolled2=(students_unenrolled2/s_enrolled2)*100
 Percentage_unenrolled2
 ```
-For 3rd iteration
+#For 3rd iteration
 ```{r}
 students_unenrolled3=length(cyber.security.3_leaving.survey.responses$left_at)
-students_unenrolled3 #Number of students unenrolled at 1st iteration
+students_unenrolled3 #Number of students unenrolled at 3st iteration
 s_enrolled3=length(unique(cyber.security.3_enrolments$learner_id))#Number of students enrolled
 s_enrolled3
 Percentage_unenrolled3=(students_unenrolled3/s_enrolled3)*100
 Percentage_unenrolled3
 ```
-For 4th iteration
+#For 4th iteration
 ```{r}
 students_unenrolled=length(cyber.security.4_leaving.survey.responses$left_at)
 students_unenrolled #Number of students unenrolled
@@ -147,7 +170,8 @@ s_enrolled #Number of students enrolled
 Percentage_unenrolled=(students_unenrolled/s_enrolled)*100
 Percentage_unenrolled
 ```
-For 5th iteration
+We can observe that a total of 67 students unenrolled from the cyber-security course, accounting for 2% of the total number of students who registered.
+#For 5th iteration
 ```{r}
 students_unenrolled5=length(cyber.security.5_leaving.survey.responses$left_at)
 students_unenrolled5 #Number of students unenrolled at 1st iteration
@@ -156,7 +180,7 @@ s_enrolled5
 Percentage_unenrolled5=(students_unenrolled5/s_enrolled5)*100
 Percentage_unenrolled5
 ```
-For 6th iteration
+#For 6th iteration
 ```{r}
 students_unenrolled6=length(cyber.security.6_leaving.survey.responses$left_at)
 students_unenrolled6 #Number of students unenrolled at 1st iteration
@@ -165,7 +189,7 @@ s_enrolled6
 Percentage_unenrolled6=(students_unenrolled6/s_enrolled6)*100
 Percentage_unenrolled6
 ```
-For 7th iteration
+#For 7th iteration
 ```{r}
 students_unenrolled7=length(cyber.security.7_leaving.survey.responses$left_at)
 students_unenrolled7 #Number of students unenrolled at 1st iteration
@@ -176,15 +200,7 @@ Percentage_unenrolled7
 ```
 From the above calculation we can tell that, for the first 3 iteration, the percentage of unenrolled  is 0.But for the 4th iteration there is an increase from 0 to 2%.Likewise, the percentage for 5th, 6th and 7th is 5%,3%, 3.5% respectively.
 
-
-
-#Checking the main reason for leaving the course for 4th iteration.
-```{r}
-gender_plot = ggplot(cyber.security.4_leaving.survey.responses, aes(y = factor(leaving_reason))) + 
-  geom_bar(stat = "count", width = 0.7, fill = "steelblue") + theme_minimal() 
-gender_plot
-```
-
+Let's see which countries had the highest number of unenrolled students. To get detected countries for leaving survey, we'll need to combine the enrollment and leaving survey datasets.
 ```{r}
 merge=merge.data.frame(cyber.security.4_leaving.survey.responses,cyber.security.4_enrolments,on="learner_id")
 unenrolled_students=as.data.frame(table(merge$detected_country))
@@ -196,7 +212,9 @@ ggplot(aes(reorder(Var1,-Freq),Freq))+
       y="No. of students unenrolled")+
   theme(plot.title = element_text(hjust = 0.5))
 ```
+We can observe from the graph that the most students were unenrolled in Great Britain, followed by Egypt and India. However, because the whole unenrolled student population is only 2% of total enrolment, we may assume that 98% of students are interested in taking the course.
 
+Plotting the graph between reason and number of unenrolled students will reveal the reasons for unenrollment.
 ```{r}
 students_unerolled_plot=as.data.frame(table(cyber.security.4_leaving.survey.responses$leaving_reason))
 ggplot(students_unerolled_plot,aes(reorder(Var1,Freq),Freq))+
@@ -205,13 +223,16 @@ ggplot(students_unerolled_plot,aes(reorder(Var1,Freq),Freq))+
    labs(title="No of students unenrolled vs reasons",x="Reasons",y="No .of students unenrolled")+
   theme(plot.title = element_text(hjust = 0.5))
 ```
+According to the responses, 14 students dropped out of the course because the course was not what they expected, 12 students believed that they dint have enough time, and 6 students thought the course would not help them reach there goals.
+We can also see that just 67 students out of a total of 3991 dropped out of the course. When the course was offered for the fifth time, 5% of the total students registered.
+
 
 ```{r}
 ggplot(cyber.security.4_video.stats,aes(y=title,x=total_views,))+
   geom_col(stat = "identity",color="green",position = position_dodge())
 ```
 
-
+Let's see whether there's a link between the number of people who viewed the course and the number of people who enrolled from different nations. We can extract the seen percentage of the continents from the video stat dataset.
 ```{r}
 g=ggplot(cyber.security.4_video.stats)
 g+geom_path(aes(x=step_position,y=europe_views_percentage,colour='Europe view percentage'))+
@@ -222,7 +243,12 @@ geom_path(aes(x=step_position,y=south_america_views_percentage,colour='South Ame
 geom_path(aes(x=step_position,y=africa_views_percentage,colour='Africa view percentage'))+
 scale_color_discrete("Pattern")+xlab("step position")+ylab("viewed percentage")
 ```
+The plot clearly shows that Europe's overall view percentage is above 40%, which is strongly correlated to countries like Great Britain, where enrollment was also very high, but there is a decrease in view percentage when it comes to the second and third most enrolled countries which were African and Asian countries The North American countries like USA, showed very little interest from the start of the course, and after Great Britain, the United States had the second most unenrolled students. Similarly, South American countries showed little interest in learning the course from the outset.
 
+We're presuming the countries with continents in the above because we don't have exact data on which countries' view percentages are what. To avoid losing pupils, the corporation must explore new business ideas in continents such as South America and North America.
+
+
+Counting the number of students who unenrolled after the course was repeated seven times.
 ```{r}
 unenrollment.list=list(cyber.security.1_enrolments,cyber.security.2_enrolments,cyber.security.3_enrolments,cyber.security.4_enrolments,cyber.security.5_enrolments,cyber.security.6_enrolments,cyber.security.7_enrolments)
 
@@ -231,4 +257,27 @@ students=data.frame(students_enrollements_over_7_runs)
 colnames(students)=c("1st time","2nd time ","3rd time","4th time","5th time","6th time","7th time")
 students
 ```
+From the above, we can see that when the course was first offered, more than 1213 persons unenrolled, and that this number gradually decreased over the course of seven runs, with the lowest unenrollment in the seventh run being only 110 students.
+But when calculated percenatge for 4th, 5th, 6th and 7th time, it was 2%, 5%, 3%, 3.4%
+So we can tell that the unenrollement increase till 5th time and had a slight downfall in the next times.
 
+Checking the main reason for leaving the course for 4th iteration.
+```{r}
+gender_plot = ggplot(cyber.security.4_leaving.survey.responses, aes(y = factor(leaving_reason))) + 
+  geom_bar(stat = "count", width = 0.7, fill = "steelblue") + theme_minimal() 
+gender_plot
+```
+
+
+
+
+
+
+
+```{r}
+ggplot(cyber.security.5_video.stats,aes(reorder(step_position,-total_views),total_views))+
+  geom_bar(stat="identity", fill="#f68060", alpha=.6, width=.4)+
+   labs(title="Step position vs Total views",x="Step position",y="Total views")+
+  theme(plot.title = element_text(hjust = 0.5))
+```
+should do the 2nd hypothesis by using somw unsed graph.
